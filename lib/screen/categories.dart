@@ -15,7 +15,7 @@ class CategoriesScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, // setting number of columns in my GirdView
-          childAspectRatio: 1.3,
+          childAspectRatio: 1.4,
           crossAxisSpacing: 20,
           mainAxisSpacing: 20,
         ),
