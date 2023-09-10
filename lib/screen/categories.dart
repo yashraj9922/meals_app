@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/data/dummy_data.dart';
+import 'package:meals_app/screen/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
+
+  void _selectCategory(BuildContext context) {
+    // void _selectCategory() {
+    // Stack of Screens --> Last In First Out
+    // context is not globally available as we are creating a method in StatelessWidget class...hence we need to accept a context value
+    Navigator.of(context).push(
+      /*route*/ MaterialPageRoute(
+        builder: (ctx) => const MealsScreen(title: "Some Meals", meals: []),
+      ),
+    );
+    // alternavtive code: Navigator.push(context, route);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +37,10 @@ class CategoriesScreen extends StatelessWidget {
           // availableCategories.map((category) => CategoryGridItem(category: category)).toList(),
           for (final category in availableCategories)
             // do not use parentheses here when using for-in loop
-            CategoryGridItem(category: category),
+            CategoryGridItem(
+              category: category,
+              onSelectCategory: () => _selectCategory(context),
+            ),
         ],
       ),
     );

@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/models/category.dart';
 
 class CategoryGridItem extends StatelessWidget {
-  const CategoryGridItem({super.key, required this.category});
+  const CategoryGridItem(
+      {super.key, required this.category, required this.onSelectCategory});
   final Category category;
+  final void Function() onSelectCategory;
 
   @override
   Widget build(BuildContext context) {
     // GestureDetector Widget makes a child widget tappable
     //difference is GestureDetector provides more controls like dragging etc. on the other hand it doesn't include ripple effect tap, which InkWell does
     return InkWell(
-      onTap: () {},
+      onTap: onSelectCategory,
       // splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),
       child: Container(
