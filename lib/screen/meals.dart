@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({super.key, required this.title, required this.meals});
@@ -34,7 +35,7 @@ class MealsScreen extends StatelessWidget {
       content = ListView.builder(
         //Creates a scrollable, linear array of widgets that are created ON DEMAND...optimizing my app
         itemCount: meals.length,
-        itemBuilder: (context, index) => Text(meals[index].title),
+        itemBuilder: (context, index) => MealItem(meal: meals[index]),
       );
     }
 
