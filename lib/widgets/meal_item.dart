@@ -10,6 +10,13 @@ class MealItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ), // Stack Widget ignores the shape argument(by default)
+      clipBehavior: Clip
+          .hardEdge, // to enforce the shape argument..so that any content that goes out of the shape will be cutoff
+      elevation: 2,
       child: InkWell(
         onTap: () {},
         child: Stack(
@@ -19,6 +26,10 @@ class MealItem extends StatelessWidget {
             FadeInImage(
               placeholder: MemoryImage(kTransparentImage),
               image: NetworkImage(meal.imageUrl),
+              fit: BoxFit.cover,
+              // making sure that image is never distorted but cutoff if it does not fit into the box
+              height: 200,
+              width: double.infinity,
             ),
             // this widget that controls where a child of a [Stack] is positioned/located
             // 2nd Widget(on top of FadeInImage Widget)
