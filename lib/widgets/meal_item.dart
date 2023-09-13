@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealItem extends StatelessWidget {
   const MealItem({super.key, required this.meal});
 
   final Meal meal;
+
+  String get complexityText {
+    return meal.complexity.name[0].toUpperCase() +
+        meal.complexity.name.substring(1);
+    // .name gives u access to the String value of enum
+  }
+
+  String get affordabilityText {
+    return meal.affordability.name[0].toUpperCase() +
+        meal.affordability.name.substring(1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +26,8 @@ class MealItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ), // Stack Widget ignores the shape argument(by default)
-      clipBehavior: Clip
-          .hardEdge, // to enforce the shape argument..so that any content that goes out of the shape will be cutoff
+      clipBehavior: Clip.hardEdge,
+      // to enforce the shape argument..so that any content that goes out of the shape will be cutoff
       elevation: 2,
       child: InkWell(
         onTap: () {},
@@ -58,8 +70,29 @@ class MealItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Row(
-                      children: [],
-                    )
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MealItemTrait(
+                          icon: Icons.schedule,
+                          label: /*meal.duration.toString()+" min",)*/
+                              '${meal.duration} min',
+                        ),
+
+                        const SizedBox(width: 12),
+
+                        MealItemTrait(
+                          icon: Icons.work,
+                          label: complexityText,
+                        ), // need to format the text of complexity hence we need to add a getter
+
+                        const SizedBox(width: 12),
+
+                        MealItemTrait(
+                          icon: Icons.attach_money,
+                          label: affordabilityText,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
