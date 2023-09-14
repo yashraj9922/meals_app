@@ -27,29 +27,30 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick you Category'),
+    return
+        // Scaffold(
+        //   appBar: AppBar(
+        //     title: const Text('Pick you Category'),
+        //   ),
+        GridView(
+      padding: const EdgeInsets.all(24),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // setting number of columns in my GirdView
+        childAspectRatio: 1.5,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
       ),
-      body: GridView(
-        padding: const EdgeInsets.all(24),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // setting number of columns in my GirdView
-          childAspectRatio: 1.5,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        children: [
-          // for-in loop is alternative for map function
-          // availableCategories.map((category) => CategoryGridItem(category: category)).toList(),
-          for (final caTegory in availableCategories)
-            // do not use parentheses here when using for-in loop
-            CategoryGridItem(
-              category: caTegory,
-              onSelectCategory: () => _selectCategory(context, caTegory),
-            ),
-        ],
-      ),
+      children: [
+        // for-in loop is alternative for map function
+        // availableCategories.map((category) => CategoryGridItem(category: category)).toList(),
+        for (final caTegory in availableCategories)
+          // do not use parentheses here when using for-in loop
+          CategoryGridItem(
+            category: caTegory,
+            onSelectCategory: () => _selectCategory(context, caTegory),
+          ),
+      ],
+      // ),
     );
   }
 }
