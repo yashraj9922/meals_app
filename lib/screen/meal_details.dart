@@ -14,6 +14,12 @@ class MealDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.favorite),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -33,7 +39,6 @@ class MealDetailsScreen extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 14),
-            
             for (final ingredient in meal.ingredients)
               Text(
                 ingredient,
