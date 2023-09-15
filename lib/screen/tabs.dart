@@ -16,13 +16,29 @@ class _TabsScreenState extends State<TabsScreen> {
   int _selectedPageIndex = 0;
   final List<Meal> _favouriteMeal = [];
 
+  void showInfoMessage(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   void _toggleMealFavouriteStatus(Meal meal) {
     final isExisting = _favouriteMeal.contains(meal);
 
     if (isExisting) {
-      _favouriteMeal.remove(meal);
+      setState(() {
+        _favouriteMeal.remove(meal);
+      });
+      showInfoMessage("Meal is no longer a favourite");
     } else {
-      _favouriteMeal.add(meal);
+      setState(() {
+        _favouriteMeal.add(meal);
+      });
+      showInfoMessage("Marked as favourite!");
     }
   }
 
@@ -42,7 +58,8 @@ class _TabsScreenState extends State<TabsScreen> {
     if (_selectedPageIndex == 1) {
       // activePage = const MealsScreen(title: "Favourite Meals", meals: []);
       activePage = MealsScreen(
-        meals: [],
+        // meals: [],
+        meals: _favouriteMeal,
         onToggleFavourite: _toggleMealFavouriteStatus,
       );
       activePageTitle = "Your Fav";
@@ -55,7 +72,7 @@ class _TabsScreenState extends State<TabsScreen> {
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
-        currentIndex: _selectedPageIndex, // highlighting a tab on Selection
+        currentIndex: _selectedPageIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.set_meal),
