@@ -69,16 +69,31 @@ class _TabsScreenState extends State<TabsScreen> {
 
   // more optimized code below
 
-  void _setScreen(String identifier) {
+  // void _setScreen(String identifier) {
+  //   Navigator.pop(context);
+  //   if (identifier == "filters") {
+  //     Navigator.of(context).push(
+  //       MaterialPageRoute(
+  //         builder: (ctx) {
+  //           return const FiltersScreen();
+  //         },
+  //       ),
+  //     );
+  //   }
+  // }
+  void _setScreen(String identifier) async {
     Navigator.pop(context);
     if (identifier == "filters") {
-      Navigator.of(context).push(
+      final result = await Navigator.of(context).push< /*return type of push*/
+          Map /*itself a genric type*/ < /*keys will be of type Filter*/ Filter,
+              /*value type of a key*/ bool>>(
         MaterialPageRoute(
           builder: (ctx) {
             return const FiltersScreen();
           },
         ),
       );
+      print(result);
     }
   }
 
