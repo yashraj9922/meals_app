@@ -106,7 +106,7 @@ class _TabsScreenState extends State<TabsScreen> {
               /*value type of a key*/ bool>>(
         MaterialPageRoute(
           builder: (ctx) {
-            return const FiltersScreen();
+            return FiltersScreen(currentFilter: _selectedFilters);
           },
         ),
       );

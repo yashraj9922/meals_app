@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 enum Filter { glutenFree, lactoseFree, vegetarian, vegan }
 
 class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key});
+  const FiltersScreen({super.key, required this.currentFilter});
+  final Map<Filter, bool> currentFilter;
 
   @override
   State<FiltersScreen> createState() {
@@ -19,6 +20,15 @@ class _FilterScreenState extends State<FiltersScreen> {
   var _lactoseFreeFilterSet = false;
   var _vegetarianFilterSet = false;
   var _veganFilterSet = false;
+
+// need to save and pass currently active filters from tabs screen to filters screen and not reset them as i go back to filters screen again
+  void initState() {
+    super.initState();
+    _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
+    _lactoseFreeFilterSet = widget.currentFilter[Filter.lactoseFree]!;
+    _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
+    _veganFilterSet = widget.currentFilter[Filter.vegan]!;
+  }
 
   @override
   Widget build(BuildContext context) {
