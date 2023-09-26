@@ -32,7 +32,8 @@ class CategoriesScreen extends StatelessWidget {
         ),
       ),
     );
-    // alternavtive code: Navigator.push(context, route);
+    // alternavtive code:
+    //Navigator.push(context, route);
   }
 
   @override
@@ -60,7 +61,7 @@ class CategoriesScreen extends StatelessWidget {
             onSelectCategory: () => _selectCategory(context, caTegory),
           ),
       ],
-      // ),
+      // ),-->Scaffold
     );
   }
 }

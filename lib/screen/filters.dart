@@ -22,6 +22,7 @@ class _FilterScreenState extends State<FiltersScreen> {
   var _veganFilterSet = false;
 
 // need to save and pass currently active filters from tabs screen to filters screen and not reset them as i go back to filters screen again
+  @override
   void initState() {
     super.initState();
     _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
