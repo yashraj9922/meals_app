@@ -14,7 +14,7 @@ class FavoriteMealsNotifier
       state = state
           .where((m) => /*shuold return false*/ m.id != meal.id)
           .toList(); // .where will always return a new list
-          return false;
+      return false;
     } else {
       // set a state such that it should have all the existing items and also new ones added
       //using spread operator '...'

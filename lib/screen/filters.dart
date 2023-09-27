@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/providers/filters_provider.dart';
 // import 'package:meals_app/screen/tabs.dart';
 // import 'package:meals_app/widgets/main_drawer.dart';
 
 //standardising the keys
-enum Filter { glutenFree, lactoseFree, vegetarian, vegan }
-
-class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({super.key, required this.currentFilter});
-  final Map<Filter, bool> currentFilter;
+// enum Filter { glutenFree, lactoseFree, vegetarian, vegan }==> shifting to FiltersNotifier
+// class FiltersScreen extends StatefulWidget {
+class FiltersScreen extends ConsumerStatefulWidget {
+  // connecting filters.dart to provider
+  const FiltersScreen({
+    super.key,
+    //  required this.currentFilter
+  });
+  // final Map<Filter, bool> currentFilter;--> getting this info from provider itself
 
   @override
-  State<FiltersScreen> createState() {
+  // State<FiltersScreen> createState() {
+  ConsumerState<FiltersScreen> createState() {
     return _FilterScreenState();
   }
 }
 
-class _FilterScreenState extends State<FiltersScreen> {
+// class _FilterScreenState extends State<FiltersScreen> {
+class _FilterScreenState extends ConsumerState<FiltersScreen> {
   var _glutenFreeFilterSet = false;
   var _lactoseFreeFilterSet = false;
   var _vegetarianFilterSet = false;
@@ -25,10 +33,15 @@ class _FilterScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
-    _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
-    _lactoseFreeFilterSet = widget.currentFilter[Filter.lactoseFree]!;
-    _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
-    _veganFilterSet = widget.currentFilter[Filter.vegan]!;
+    final activeFilters = ref.read(filtersProvider);
+    // _glutenFreeFilterSet = widget.currentFilter[Filter.glutenFree]!;
+    // _lactoseFreeFilterSet = widget.currentFilter[Filter.lactoseFree]!;
+    // _vegetarianFilterSet = widget.currentFilter[Filter.vegetarian]!;
+    // _veganFilterSet = widget.currentFilter[Filter.vegan]!;
+    _glutenFreeFilterSet = activeFilters[Filter.glutenFree]!;
+    _lactoseFreeFilterSet = activeFilters[Filter.lactoseFree]!;
+    _vegetarianFilterSet = activeFilters[Filter.vegetarian]!;
+    _veganFilterSet = activeFilters[Filter.vegan]!;
   }
 
   @override
@@ -50,15 +63,22 @@ class _FilterScreenState extends State<FiltersScreen> {
       body: WillPopScope(
         // WillPopScope Widget is used for returning Data when Leaving a Screen
         onWillPop: () async /*convinient way of returning a future*/ {
-          Navigator.of(context).pop({
-            // returning a map...setting up different keys for differnet filters
+          ref.read(filtersProvider.notifier).setFilters({
             Filter.glutenFree: _glutenFreeFilterSet,
             Filter.lactoseFree: _lactoseFreeFilterSet,
             Filter.vegetarian: _vegetarianFilterSet,
             Filter.vegan: _veganFilterSet,
-          } // This maped data we need to acessed into tabs screen from where actually we navigated to this screen
-              );
-          return false; // confirming wheather to navigate back or not....we are returning false here as we are manually navigating back above(not poping twice)..if we do not have any logic to navigate back then return true;
+          });
+          // Navigator.of(context).pop({
+          // returning a map...setting up different keys for differnet filters
+          // Filter.glutenFree: _glutenFreeFilterSet,
+          // Filter.lactoseFree: _lactoseFreeFilterSet,
+          // Filter.vegetarian: _vegetarianFilterSet,
+          // Filter.vegan: _veganFilterSet,
+          // } // This maped data we need to acessed into tabs screen from where actually we navigated to this screen
+          // );
+          // return false; // confirming wheather to navigate back or not....we are returning false here as we are manually navigating back above(not poping twice)..if we do not have any logic to navigate back then return true;
+          return true;
         },
         child: Column(children: [
           SwitchListTile(

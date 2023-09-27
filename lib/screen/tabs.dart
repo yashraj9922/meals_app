@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:meals_app/data/dummy_data.dart';
 // import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/providers/favorities_provider.dart';
+import 'package:meals_app/providers/filters_provider.dart';
 import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screen/categories.dart';
 import 'package:meals_app/screen/filters.dart';
@@ -39,7 +40,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   //   Filter.vegan: false,
   //   Filter.vegetarian: false,
   // }; // these are initial values for filters...these should be updated ehen we receive updated values from filters screen
-  Map<Filter, bool> _selectedFilters = kInitialFilters;
+  // Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   // void showInfoMessage(String message) {
   //   ScaffoldMessenger.of(context).clearSnackBars();
@@ -107,20 +108,23 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _setScreen(String identifier) async {
     Navigator.pop(context);
     if (identifier == "filters") {
-      final result = await Navigator.of(context).push< /*return type of push*/
+      // final result =
+      await Navigator.of(context).push< /*return type of push*/
           Map /*itself a genric type*/ < /*keys will be of type Filter*/ Filter,
               /*value type of a key*/ bool>>(
         MaterialPageRoute(
           builder: (ctx) {
-            return FiltersScreen(currentFilter: _selectedFilters);
+            return const FiltersScreen(
+                // currentFilter: _selectedFilters,
+                );
           },
         ),
       );
-      setState(() {
-        _selectedFilters =
-            result ?? /*allows you to setup the conditional fallback value*/
-                kInitialFilters; // ?? checks wheather the value infront is null and if nul then it will use the fallback value afer ??
-      });
+      // setState(() {
+      //   _selectedFilters =
+      //       result ?? /*allows you to setup the conditional fallback value*/
+      //           kInitialFilters; // ?? checks wheather the value infront is null and if nul then it will use the fallback value afer ??
+      // });
     }
   }
 
@@ -131,22 +135,23 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     // ref.read(provider);// read()--> allows to read the value of a provider
     final meals = ref.watch(
         mealsProvider); // watch()--> allows to listen to a provider...setting up a listener that makes sure that build method is called whenever the value(data) of the provider changes
+    final selectedActiveFilters = ref.watch(filtersProvider);
     final availableMeals = meals.where((meal) {
       // using mealsProvider from riverpod package
       // true-->if meal should be kept
       //false--> if meal should be dropped
-      if (_selectedFilters[
+      if (selectedActiveFilters[
               Filter.glutenFree]! /*'!' because it is never a null value*/ &&
           !meal.isGlutenFree /*meal should not be Gluten free*/) {
         return false;
       }
-      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+      if (selectedActiveFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
         return false;
       }
-      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+      if (selectedActiveFilters[Filter.vegetarian]! && !meal.isVegetarian) {
         return false;
       }
-      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+      if (selectedActiveFilters[Filter.vegan]! && !meal.isVegan) {
         return false;
       }
       return true;
