@@ -1,8 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screen/categories.dart';
 import 'package:meals_app/screen/filters.dart';
 import 'package:meals_app/screen/meals.dart';
@@ -15,16 +15,21 @@ const kInitialFilters = {
   Filter.vegetarian: false,
 };
 
-class TabsScreen extends StatefulWidget {
+// class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
+  // changing to ConsumerStatefulWidget from StatefulWidget..riverpod package
+// Stateful --> ConsumerStatefulWidget, Stateless --> ConsumerWidget
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() {
+  // State<TabsScreen> createState() {
+  ConsumerState<TabsScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+// class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
   final List<Meal> _favouriteMeal = [];
   // Map<Filter, bool> _selectedFilters = {
@@ -120,7 +125,12 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = dummyMeals.where((meal) {
+    // final availableMeals = dummyMeals.where((meal) {
+    // widget--> reaching out widget of State class and ref-->allows to setup listeners to providers
+    // ref.read(provider);// read()--> allows to read the value of a provider
+    final meals = ref.watch(mealsProvider);// watch()--> allows to listen to a provider...setting up a listener that makes sure that build method is called whenever the value(data) of the provider changes
+    final availableMeals = meals.where((meal) {
+      // using mealsProvider from riverpod package
       // true-->if meal should be kept
       //false--> if meal should be dropped
       if (_selectedFilters[
