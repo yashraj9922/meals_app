@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meals_app/data/dummy_data.dart';
-import 'package:meals_app/models/meal.dart';
+// import 'package:meals_app/data/dummy_data.dart';
+// import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/favorities_provider.dart';
 import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screen/categories.dart';
 import 'package:meals_app/screen/filters.dart';
@@ -31,7 +32,7 @@ class TabsScreen extends ConsumerStatefulWidget {
 // class _TabsScreenState extends State<TabsScreen> {
 class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-  final List<Meal> _favouriteMeal = [];
+  //// final List<Meal> _favouriteMeal = [];--> not been used....riverpod
   // Map<Filter, bool> _selectedFilters = {
   //   Filter.glutenFree: false,
   //   Filter.lactoseFree: false,
@@ -40,17 +41,17 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   // }; // these are initial values for filters...these should be updated ehen we receive updated values from filters screen
   Map<Filter, bool> _selectedFilters = kInitialFilters;
 
-  void showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 1),
-      ),
-    );
-  }
+  // void showInfoMessage(String message) {
+  //   ScaffoldMessenger.of(context).clearSnackBars();
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(message),
+  //       duration: const Duration(seconds: 1),
+  //     ),
+  //   );
+  // } ==> shifted to meal_details.dart
 
-  void _toggleMealFavouriteStatus(Meal meal) {
+  /*void _toggleMealFavouriteStatus(Meal meal) {
     final isExisting = _favouriteMeal.contains(meal);
 
     if (isExisting) {
@@ -64,7 +65,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       });
       showInfoMessage("Marked as favourite!");
     }
-  }
+  } ==> managed in StateNotifier class*/
 
   void _selectPage(int index) {
     setState(() {
@@ -128,7 +129,8 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     // final availableMeals = dummyMeals.where((meal) {
     // widget--> reaching out widget of State class and ref-->allows to setup listeners to providers
     // ref.read(provider);// read()--> allows to read the value of a provider
-    final meals = ref.watch(mealsProvider);// watch()--> allows to listen to a provider...setting up a listener that makes sure that build method is called whenever the value(data) of the provider changes
+    final meals = ref.watch(
+        mealsProvider); // watch()--> allows to listen to a provider...setting up a listener that makes sure that build method is called whenever the value(data) of the provider changes
     final availableMeals = meals.where((meal) {
       // using mealsProvider from riverpod package
       // true-->if meal should be kept
@@ -151,17 +153,19 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     }).toList(); // so that I actually return a List and not a iterable...hence now we should pass this list to Catgories Screen
 
     Widget activePage = CategoriesScreen(
-      onToggleFavourite: _toggleMealFavouriteStatus,
+      //// onToggleFavourite: _toggleMealFavouriteStatus,
       availableMeals: availableMeals,
     );
     var activePageTitle = "Categories";
 
     if (_selectedPageIndex == 1) {
+      final favoriteMeals = ref.watch(favoritesMealProvider);
       // activePage = const MealsScreen(title: "Favourite Meals", meals: []);
       activePage = MealsScreen(
         // meals: [],
-        meals: _favouriteMeal,
-        onToggleFavourite: _toggleMealFavouriteStatus,
+        // meals: _favouriteMeal,
+        meals: favoriteMeals,
+        ////onToggleFavourite: _toggleMealFavouriteStatus,
       );
       activePageTitle = "Your Fav";
     }
