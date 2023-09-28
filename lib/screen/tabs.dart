@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/providers/favorities_provider.dart';
 import 'package:meals_app/providers/filters_provider.dart';
-import 'package:meals_app/providers/meals_provider.dart';
+// import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screen/categories.dart';
 import 'package:meals_app/screen/filters.dart';
 import 'package:meals_app/screen/meals.dart';
@@ -133,29 +133,30 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     // final availableMeals = dummyMeals.where((meal) {
     // widget--> reaching out widget of State class and ref-->allows to setup listeners to providers
     // ref.read(provider);// read()--> allows to read the value of a provider
-    final meals = ref.watch(
-        mealsProvider); // watch()--> allows to listen to a provider...setting up a listener that makes sure that build method is called whenever the value(data) of the provider changes
-    final selectedActiveFilters = ref.watch(filtersProvider);
-    final availableMeals = meals.where((meal) {
-      // using mealsProvider from riverpod package
-      // true-->if meal should be kept
-      //false--> if meal should be dropped
-      if (selectedActiveFilters[
-              Filter.glutenFree]! /*'!' because it is never a null value*/ &&
-          !meal.isGlutenFree /*meal should not be Gluten free*/) {
-        return false;
-      }
-      if (selectedActiveFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
-        return false;
-      }
-      if (selectedActiveFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      if (selectedActiveFilters[Filter.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      return true;
-    }).toList(); // so that I actually return a List and not a iterable...hence now we should pass this list to Catgories Screen
+    // final meals = ref.watch(
+    //     mealsProvider); // watch()--> allows to listen to a provider...setting up a listener that makes sure that build method is called whenever the value(data) of the provider changes
+    // final selectedActiveFilters = ref.watch(filtersProvider);
+    final availableMeals = ref.watch(filteredMealProvider);
+    // final availableMeals = meals.where((meal) {
+    //   // using mealsProvider from riverpod package
+    //   // true-->if meal should be kept
+    //   //false--> if meal should be dropped
+    //   if (selectedActiveFilters[
+    //           Filter.glutenFree]! /*'!' because it is never a null value*/ &&
+    //       !meal.isGlutenFree /*meal should not be Gluten free*/) { 
+    //     return false;
+    //   }
+    //   if (selectedActiveFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+    //     return false;
+    //   }
+    //   if (selectedActiveFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+    //     return false;
+    //   }
+    //   if (selectedActiveFilters[Filter.vegan]! && !meal.isVegan) {
+    //     return false;
+    //   }
+    //   return true;
+    // }).toList(); // so that I actually return a List and not a iterable...hence now we should pass this list to Catgories Screen
 
     Widget activePage = CategoriesScreen(
       //// onToggleFavourite: _toggleMealFavouriteStatus,
