@@ -143,7 +143,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     //   //false--> if meal should be dropped
     //   if (selectedActiveFilters[
     //           Filter.glutenFree]! /*'!' because it is never a null value*/ &&
-    //       !meal.isGlutenFree /*meal should not be Gluten free*/) { 
+    //       !meal.isGlutenFree /*meal should not be Gluten free*/) {
     //     return false;
     //   }
     //   if (selectedActiveFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
