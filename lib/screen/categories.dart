@@ -5,7 +5,7 @@ import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screen/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen(
       {super.key,
       //// required this.onToggleFavourite,
@@ -14,12 +14,36 @@ class CategoriesScreen extends StatelessWidget {
   ////final void Function(Meal meal) onToggleFavourite;
   final List<Meal> availableMeals;
 
+  @override
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+      // lowerBound: 0,
+      // upperBound: 1,-->default values
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   void _selectCategory(BuildContext context, Category category) {
     // final filteredMeals = dummyMeals.where((meal) => meal.categories.contains(category.id),).toList();
     // void _selectCategory() {
     // Stack of Screens --> Last In First Out
     // context is not globally available as we are creating a method in StatelessWidget class...hence we need to accept a context value
-    final filteredMeals = availableMeals
+    final filteredMeals = widget.availableMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
 
