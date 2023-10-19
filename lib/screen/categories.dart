@@ -78,32 +78,50 @@ class _CategoriesScreenState extends State<CategoriesScreen>
         // ),-->Scaffold
 
         AnimatedBuilder(
-            animation: _animationController,
-            child: GridView(
-              padding: const EdgeInsets.all(24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // setting number of columns in my GirdView
-                childAspectRatio: 1.5,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-              ),
-              children: [
-                // for-in loop is alternative for map function
-                // availableCategories.map((category) => CategoryGridItem(category: category)).toList(),
-                for (final caTegory in availableCategories)
-                  // do not use parentheses here when using for-in loop
-                  CategoryGridItem(
-                    category: caTegory,
-                    onSelectCategory: () => _selectCategory(context, caTegory),
-                  ),
-              ],
+      animation: _animationController,
+      child: GridView(
+        padding: const EdgeInsets.all(24),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // setting number of columns in my GirdView
+          childAspectRatio: 1.5,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+        ),
+        children: [
+          // for-in loop is alternative for map function
+          // availableCategories.map((category) => CategoryGridItem(category: category)).toList(),
+          for (final caTegory in availableCategories)
+            // do not use parentheses here when using for-in loop
+            CategoryGridItem(
+              category: caTegory,
+              onSelectCategory: () => _selectCategory(context, caTegory),
             ),
-            builder: (context, child) => Padding(
-                  padding: EdgeInsets.only(
-                      top: 100 - _animationController.value * 100),// slides up animation
-                  // EdgeInsets.only(top: _animationController.value * 100), --> slide down animation
-                  child: child,
-                ));
+        ],
+      ),
+      // builder: (context, child) => Padding(
+      //       padding: EdgeInsets.only(
+      //           top: 100 - _animationController.value * 100),// slides up animation
+      //       // EdgeInsets.only(top: _animationController.value * 100), --> slide down animation
+
+      builder: (context, child) => SlideTransition(
+        // position: _animationController.drive(
+        //   Tween(
+        //     begin: const Offset(0, 0.3),
+        //     end: const Offset(0, 0),
+        //   )
+        // ),
+        position: Tween(
+          begin: const Offset(0, 0.3),
+          end: const Offset(0, 0),
+        ).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeInOut,
+          ),
+        ),
+        child: child,
+      ),
+    );
     // returning Padding Widget and not directly Girdview will make sure that Gridview widget is not build 60 times but only the padding widget
   }
 }
